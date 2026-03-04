@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PropAdmin · Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ── -->
+  <div id="sidebar">
+    <div class="logo">
+      <h1>🏠 PropAdmin</h1>
+      <p>Real Estate CRM</p>
+    </div>
+    <nav>
+      <button class="nav-btn active" data-view="dashboard">⊡ &nbsp; Dashboard</button>
+      <button class="nav-btn"        data-view="leads">👥 &nbsp; Interests</button>
+      <button class="nav-btn"        data-view="properties">🏘 &nbsp; Properties</button>
+      <button class="nav-btn danger" data-view="logout">↩ &nbsp; Logout</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="status-dot"></div>
+      <div id="status-text">Connecting…</div>
+    </div>
+  </div>
+
+  <!-- ── Main ── -->
+  <div id="main">
+
+    <div class="page-header">
+      <div>
+        <h2>Dashboard Overview</h2>
+        <p>Live data from Firebase · interests &amp; properties collections</p>
+      </div>
+      <div id="live-badge">⏳ Connecting…</div>
+    </div>
+
+    <div id="error-banner">
+      <strong>⚠️ Firebase error: <span id="error-msg"></span></strong><br/>
+      <span>Open <code>js/firebase.js</code> and paste your real Firebase config values.</span>
+    </div>
+
+    <!-- Dashboard view -->
+    <div id="view-dashboard" class="view">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div><div class="kpi-label">Total Leads</div><div class="kpi-value" id="kpi-total">…</div><div class="kpi-delta" style="color:#4f8ef7">interests collection</div></div>
+          <div class="kpi-icon">👥</div>
+        </div>
+        <div class="kpi-card">
+          <div><div class="kpi-label">Hot &amp; New</div><div class="kpi-value" id="kpi-hot">…</div><div class="kpi-delta" style="color:#ef4444">need attention now</div></div>
+          <div class="kpi-icon">🔥</div>
+        </div>
+        <div class="kpi-card">
+          <div><div class="kpi-label">Avg Max Budget</div><div class="kpi-value" id="kpi-budget" style="font-size:18px;padding-top:8px">…</div><div class="kpi-delta" style="color:#34d399">across all leads</div></div>
+          <div class="kpi-icon">💰</div>
+        </div>
+        <div class="kpi-card">
+          <div><div class="kpi-label">Properties</div><div class="kpi-value" id="kpi-props">…</div><div class="kpi-delta" style="color:#a78bfa">in Firebase</div></div>
+          <div class="kpi-icon">🏘</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="card">
+          <div class="card-title">Lead Volume Over Time</div>
+          <div class="card-sub">New leads per month</div>
+          <div class="chart-wrap"><canvas id="areaChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Intent Breakdown</div>
+          <div class="card-sub">Rent vs Buy vs Availability</div>
+          <div class="chart-wrap-sm"><canvas id="pieChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header">
+          <div class="card-title">Recent Leads</div>
+          <button class="view-all-btn" id="view-all-btn">View All →</button>
+        </div>
+        <div id="recent-leads"><div class="empty">Loading from Firebase…</div></div>
+      </div>
+    </div>
+
+    <!-- Interests / Leads view -->
+    <div id="view-leads" class="view">
+      <div class="filters">
+        <input  id="search-input"   class="filter-input"  placeholder="🔍  Search name, email, location…"/>
+        <select id="filter-mode"    class="filter-select">
+          <option value="all">All Modes</option>
+          <option value="rent">Rent</option>
+          <option value="buy">Buy</option>
+          <option value="availability">Availability</option>
+        </select>
+        <select id="filter-status"  class="filter-select">
+          <option value="all">All Status</option>
+          <option value="New">New</option>
+          <option value="Hot">Hot</option>
+          <option value="Warm">Warm</option>
+          <option value="Cold">Cold</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Mode</th><th>Properties</th><th>Max Budget</th><th>Date</th><th>Status</th></tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <tr><td colspan="9" class="empty-cell">Loading from Firebase…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="leads-count"></div>
+    </div>
+
+    <!-- Properties view -->
+    <div id="view-properties" class="view">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Category</th><th>Location</th><th>Price</th><th>Bedrooms</th><th>Status</th></tr>
+          </thead>
+          <tbody id="props-tbody">
+            <tr><td colspan="6" class="empty-cell">Loading properties…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
