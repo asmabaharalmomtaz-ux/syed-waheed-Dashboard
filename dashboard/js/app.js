@@ -14,7 +14,7 @@ import { initAuth }                          from "./auth.js";
 import { collection, onSnapshot, query, orderBy }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-let allLeads        = [];
+
 let allProperties   = [];
 let allMembers      = [];
 let allSell         = [];
@@ -52,7 +52,7 @@ function setView(viewName) {
   document.querySelectorAll(".view").forEach(v => v.style.display = "none");
   const el = document.getElementById("view-" + viewName);
   if (el) el.style.display = "block";
-  if (viewName === "leads")         renderLeadsTable(allLeads);
+  
   if (viewName === "properties")    renderPropertiesTable(allProperties);
   if (viewName === "members")       renderMembersTable(allMembers);
   if (viewName === "sell")          renderSellTable(allSell);
