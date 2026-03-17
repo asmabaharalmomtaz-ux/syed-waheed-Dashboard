@@ -67,7 +67,7 @@ function setView(viewName) {
 function startApp() {
 
   // Old interests (legacy)
-  const qLeads = query(collection(db, "interests"), orderBy("createdAt", "desc"));
+ 
   onSnapshot(qLeads, snap => {
     allLeads = snap.docs.map(d => ({ id:d.id, ...d.data() }));
     document.getElementById("status-dot").style.background  = "#34d399";
