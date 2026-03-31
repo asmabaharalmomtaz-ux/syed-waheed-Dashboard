@@ -28,6 +28,16 @@ function renderKPIs() {
   document.getElementById("kpi-members").textContent  = allMembers.length;
   const kpiBudget = document.getElementById("kpi-budget");
   if (kpiBudget) kpiBudget.textContent = allRegistrations.length;
+
+  // Overview breakdown cards
+  const o = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  o("overview-sell",    allSell.length);
+  o("overview-buy",     allBuy.length);
+  o("overview-rent",    allRent.length);
+  o("overview-offplan", allOffplan.length);
+  o("overview-members", allMembers.length);
+  o("overview-props",   allProperties.length);
+  o("overview-regs",    allRegistrations.length);
 }
 
 // ── Lookup data helper ────────────────────────────────────────
