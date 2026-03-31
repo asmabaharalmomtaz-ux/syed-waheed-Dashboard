@@ -8,22 +8,20 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { firebaseConfig } from "./firebase.js";
 
-// ============================================================
-// ✅ ALLOWED EMAILS — add your team's Google emails here
-// ============================================================
+
 const ALLOWED_EMAILS = [
   "asmabaharalmomtaz@gmail.com",
   "rashidali33500@gmail.com",
   "teammate2@gmail.com",
 ];
-// ============================================================
+
 
 const app      = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth     = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export function initAuth(onAuthorized) {
-  // Watch auth state
+  
   onAuthStateChanged(auth, user => {
     if (user) {
       if (ALLOWED_EMAILS.includes(user.email)) {
@@ -41,18 +39,18 @@ export function initAuth(onAuthorized) {
         }
         onAuthorized();
       } else {
-        // Signed in but not on the list
+       
         signOut(auth);
         showError(`Access denied for ${user.email}. Contact your admin to be added.`);
       }
     } else {
-      // Not signed in — show login screen
+      
       document.getElementById("auth-screen").style.display = "flex";
       document.getElementById("app-screen").style.display  = "none";
     }
   });
 
-  // Google sign-in button
+  
   document.getElementById("google-signin-btn")?.addEventListener("click", async () => {
     clearError();
     try {
@@ -64,7 +62,7 @@ export function initAuth(onAuthorized) {
     }
   });
 
-  // Logout button
+  
   document.getElementById("logout-btn")?.addEventListener("click", async () => {
     await signOut(auth);
   });
