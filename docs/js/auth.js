@@ -13,7 +13,7 @@ import { firebaseConfig } from "./firebase.js";
 // ============================================================
 const ALLOWED_EMAILS = [
   "asmabaharalmomtaz@gmail.com",
-  "teammate1@gmail.com",
+  "rashidali33500@gmail.com",
   "teammate2@gmail.com",
 ];
 // ============================================================
