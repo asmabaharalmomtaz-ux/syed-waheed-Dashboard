@@ -17,7 +17,7 @@ const ALLOWED_EMAILS = [
 
 const app      = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth     = getAuth(app);
-const provider = GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
 export function initAuth(onAuthorized) {
   
