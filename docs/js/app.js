@@ -273,7 +273,7 @@ function startApp() {
   // Filters
   document.getElementById("buy-search")?.addEventListener("input",          () => renderBuyFormTable(allBuyForm));
   document.getElementById("sell-search")?.addEventListener("input",         () => renderSellFormTable(allSellForm));
-  document.getElementById("props-search")?.addEventListener("input",        () => renderPropertiesTable(allProperties));
+  
   document.getElementById("members-search")?.addEventListener("input",      () => renderMembersTable(allMembers));
   document.getElementById("regs-search")?.addEventListener("input",         () => renderRegistrationsTable(allRegistrations));
   document.getElementById("lookup-search")?.addEventListener("input",       () => renderMemberLookup(getLookupData()));
