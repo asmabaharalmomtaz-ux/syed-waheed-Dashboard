@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin · Dashboard</title>
+  <title>PropAdmin · Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/styles.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -40,29 +40,26 @@
     <!-- Sidebar -->
     <div id="sidebar">
       <div class="logo">
-        <h1>PropAdmin</h1>
-        <h2>Real Estate CRM</h2>
-        <p>Syed&Waheed Property</p>
+        <h1>🏠 PropAdmin</h1>
+        <p>Real Estate CRM</p>
       </div>
       <nav>
-        <button class="nav-btn active" data-view="dashboard">Dashboard Overview</button>
+        <button class="nav-btn active" data-view="dashboard">⊡ &nbsp; Dashboard</button>
 
         <div style="padding:8px 24px 4px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#2d3748;font-weight:600">Forms</div>
-        <button class="nav-btn" data-view="buy">🛒 &nbsp; Buy Form (Inquiry)</button>
-        <button class="nav-btn" data-view="sell">💰 &nbsp; Sell Form (Availability)</button>
+        <button class="nav-btn" data-view="buy">🛒 &nbsp; Buy Form</button>
+        <button class="nav-btn" data-view="sell">💰 &nbsp; Sell Form</button>
 
-         <div style="padding:8px 24px 4px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#2d3748;font-weight:600">Property</div>
-        <button class="nav-btn" data-view="properties">🏘 &nbsp; Main Property Form</button>
-
-        <div style="padding:8px 24px 4px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#2d3748;font-weight:600">Crew</div>
+        <div style="padding:8px 24px 4px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#2d3748;font-weight:600">People</div>
         <button class="nav-btn" data-view="members">🪪 &nbsp; Members</button>
         <button class="nav-btn" data-view="registrations">📋 &nbsp; Registrations</button>
-        <button class="nav-btn" data-view="lookup">🔍 &nbsp; Member Search</button>
+        <button class="nav-btn" data-view="lookup">🔍 &nbsp; Member Lookup</button>
         <button class="nav-btn" data-view="global-search">🌐 &nbsp; Global Search</button>
 
-       
+        <div style="padding:8px 24px 4px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#2d3748;font-weight:600">Property</div>
+        <button class="nav-btn" data-view="properties">🏘 &nbsp; Properties</button>
 
-        <button class="nav-btn danger" id="logout-btn" data-view="logout" style="margin-top:18px">↩ &nbsp; Logout</button>
+        <button class="nav-btn danger" id="logout-btn" data-view="logout" style="margin-top:8px">↩ &nbsp; Logout</button>
       </nav>
 
       <!-- User profile -->
@@ -88,7 +85,7 @@
     <div id="main">
       <div class="page-header">
         <div>
-          <h2>Overview</h2>
+          <h2>Dashboard Overview</h2>
           <p>Live data from Firebase</p>
         </div>
         <div id="live-badge">⏳ Connecting…</div>
@@ -105,24 +102,24 @@
         <!-- KPI Cards -->
         <div class="kpi-grid">
           <div class="kpi-card">
-            <div><div class="kpi-label">Total Interests</div><div class="kpi-value" id="kpi-total">…</div><div class="kpi-delta" style="color:#62656b">all submissions</div></div>
+            <div><div class="kpi-label">Total Interests</div><div class="kpi-value" id="kpi-total">…</div><div class="kpi-delta" style="color:#4f8ef7">all collections</div></div>
             <div class="kpi-icon">📥</div>
           </div>
           <div class="kpi-card">
-            <div><div class="kpi-label">Buy + Sell</div><div class="kpi-value" id="kpi-hot">…</div><div class="kpi-delta" style="color:#d8ff49">active interests</div></div>
+            <div><div class="kpi-label">Sell + Buy</div><div class="kpi-value" id="kpi-hot">…</div><div class="kpi-delta" style="color:#ef4444">active interests</div></div>
             <div class="kpi-icon">🔥</div>
           </div>
           <div class="kpi-card">
-            <div><div class="kpi-label">Registrations</div><div class="kpi-value" id="kpi-budget">…</div><div class="kpi-delta" style="color:#2ad270">submitted</div></div>
+            <div><div class="kpi-label">Registrations</div><div class="kpi-value" id="kpi-budget">…</div><div class="kpi-delta" style="color:#34d399">form submissions</div></div>
             <div class="kpi-icon">📋</div>
           </div>
           <div class="kpi-card">
-            <div><div class="kpi-label">Properties</div><div class="kpi-value" id="kpi-props">…</div><div class="kpi-delta" style="color:#222296">submitted</div></div>
-            <div class="kpi-icon"></div>
+            <div><div class="kpi-label">Properties</div><div class="kpi-value" id="kpi-props">…</div><div class="kpi-delta" style="color:#a78bfa">submitted forms</div></div>
+            <div class="kpi-icon">🏘</div>
           </div>
           <div class="kpi-card">
-            <div><div class="kpi-label">Members</div><div class="kpi-value" id="kpi-members">…</div><div class="kpi-delta" style="color:#9f4242">registered</div></div>
-            <div class="kpi-icon"></div>
+            <div><div class="kpi-label">Members</div><div class="kpi-value" id="kpi-members">…</div><div class="kpi-delta" style="color:#34d399">registered</div></div>
+            <div class="kpi-icon">🪪</div>
           </div>
         </div>
 
@@ -131,22 +128,22 @@
           <div class="card" style="padding:20px;cursor:pointer" onclick="document.querySelector('[data-view=buy]').click()">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <div>
-                <div style="font-size:12px;color:#c5cdda;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Buy Form</div>
+                <div style="font-size:12px;color:#4a5568;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Buy Form</div>
                 <div style="font-size:28px;font-weight:700;color:#34d399" id="overview-buy">…</div>
               </div>
-              <div style="font-size:28px"></div>
+              <div style="font-size:28px">🛒</div>
             </div>
-            <div style="font-size:11px;color:#565b65;margin-top:8px">Click to view →</div>
+            <div style="font-size:11px;color:#4a5568;margin-top:8px">Click to view →</div>
           </div>
           <div class="card" style="padding:20px;cursor:pointer" onclick="document.querySelector('[data-view=sell]').click()">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <div>
-                <div style="font-size:12px;color:#c5cdda;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Sell Form</div>
+                <div style="font-size:12px;color:#4a5568;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Sell Form</div>
                 <div style="font-size:28px;font-weight:700;color:#f59e0b" id="overview-sell">…</div>
               </div>
-              <div style="font-size:28px"></div>
+              <div style="font-size:28px">💰</div>
             </div>
-            <div style="font-size:11px;color:#565b65;margin-top:8px">Click to view →</div>
+            <div style="font-size:11px;color:#4a5568;margin-top:8px">Click to view →</div>
           </div>
         </div>
 
@@ -155,32 +152,32 @@
           <div class="card" style="padding:20px;cursor:pointer" onclick="document.querySelector('[data-view=members]').click()">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <div>
-                <div style="font-size:12px;color:#c5cdda;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Registered Members</div>
+                <div style="font-size:12px;color:#4a5568;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Registered Members</div>
                 <div style="font-size:28px;font-weight:700;color:#4f8ef7" id="overview-members">…</div>
               </div>
-              <div style="font-size:28px"></div>
+              <div style="font-size:28px">🪪</div>
             </div>
-            <div style="font-size:11px;color:#565b65;margin-top:8px">Click to view →</div>
+            <div style="font-size:11px;color:#4a5568;margin-top:8px">Click to view →</div>
           </div>
           <div class="card" style="padding:20px;cursor:pointer" onclick="document.querySelector('[data-view=properties]').click()">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <div>
-                <div style="font-size:12px;color:#c5cdda;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Main Property Forms</div>
+                <div style="font-size:12px;color:#4a5568;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Property Forms</div>
                 <div style="font-size:28px;font-weight:700;color:#a78bfa" id="overview-props">…</div>
               </div>
-              <div style="font-size:28px"></div>
+              <div style="font-size:28px">🏘</div>
             </div>
-            <div style="font-size:11px;color:#565b65;margin-top:8px">Click to view →</div>
+            <div style="font-size:11px;color:#4a5568;margin-top:8px">Click to view →</div>
           </div>
           <div class="card" style="padding:20px;cursor:pointer" onclick="document.querySelector('[data-view=registrations]').click()">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <div>
-                <div style="font-size:12px;color:#c5cdda;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Registrations</div>
+                <div style="font-size:12px;color:#4a5568;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Registrations</div>
                 <div style="font-size:28px;font-weight:700;color:#34d399" id="overview-regs">…</div>
               </div>
               <div style="font-size:28px">📋</div>
             </div>
-            <div style="font-size:11px;color:#565b65;margin-top:8px">Click to view →</div>
+            <div style="font-size:11px;color:#4a5568;margin-top:8px">Click to view →</div>
           </div>
         </div>
 
@@ -252,27 +249,24 @@
 
       <!-- Properties -->
       <!-- Global Search -->
-      <div id="view-global-search" class="view">
+      <div id="view-global-search" class="view" style="width:100%">
         <div style="margin-bottom:20px">
           <div style="font-size:22px;font-weight:700;color:#e2e8f0;margin-bottom:6px">🌐 Global Search</div>
           <div style="font-size:13px;color:#4a5568">Search by building name, area, city, name, email — across every collection</div>
         </div>
-        <div style="position:relative;margin-bottom:8px">
+        <div style="position:relative;margin-bottom:8px;width:100%">
           <input
             id="global-search-input"
             class="filter-input"
             placeholder="🔍  Type a building name, area, or any keyword..."
-            style="width:100%;max-width:640px;font-size:15px;padding:14px 18px;height:auto"
+            style="width:100%;font-size:15px;padding:14px 18px;height:auto;box-sizing:border-box"
           />
         </div>
         <div id="global-search-count" style="font-size:12px;color:#4a5568;margin-bottom:16px;min-height:20px"></div>
-        <div id="global-search-results"></div>
+        <div id="global-search-results" style="width:100%"></div>
       </div>
 
       <!-- Properties view -->
-       <!-- Properties view -->
-      <div id="view-properties" class="view">
-        <div class="filters">
         <div class="filters">
           <input id="props-search" class="filter-input" placeholder="🔍  Search building, area, city, ref no…"/>
         </div>
