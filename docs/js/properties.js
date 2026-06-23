@@ -1,4 +1,4 @@
-import { fmtPKR, fmtDate } from "./utils.js";
+import { fmtPKR, fmtDate, escapeHtml } from "./utils.js";
 
 const expandedProps = new Set();
 
@@ -77,13 +77,13 @@ function renderPropertyRow(p, i) {
       <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04)">
         <div class="prop-expand-btn expand-btn" data-id="${p.id}">${isOpen ? "▾" : "▸"}</div>
       </td>
-      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#e2e8f0;font-weight:500;font-size:13px">${bd.building||"—"}</td>
-      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:13px">${bd.area||"—"} · ${bd.city||"—"}</td>
-      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:12px">Fl ${ud.floor||"—"} · Unit ${ud.unitNumber||"—"}</td>
-      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:13px">${cd.firstPersonName||"—"}</td>
+      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#e2e8f0;font-weight:500;font-size:13px">${escapeHtml(bd.building)||"—"}</td>
+      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:13px">${escapeHtml(bd.area)||"—"} · ${escapeHtml(bd.city)||"—"}</td>
+      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:12px">Fl ${escapeHtml(ud.floor)||"—"} · Unit ${escapeHtml(ud.unitNumber)||"—"}</td>
+      <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:13px">${escapeHtml(cd.firstPersonName)||"—"}</td>
       <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#94a3b8;font-size:13px">${ud.sellDemandPrice ? fmtPKR(ud.sellDemandPrice) : "—"}</td>
       <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04)">
-        <span class="badge" style="background:rgba(79,142,247,0.12);color:#4f8ef7">${mkt.marketingReferenceNo||"—"}</span>
+        <span class="badge" style="background:rgba(79,142,247,0.12);color:#4f8ef7">${escapeHtml(mkt.marketingReferenceNo)||"—"}</span>
       </td>
       <td style="padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:#4a5568;font-size:12px">${fmtDate(p.createdAt)}</td>
     </tr>`;
@@ -177,8 +177,8 @@ function detailItem(label, value) {
   if (!value || value === "—") return "";
   return `
     <div style="display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px">
-      <span style="color:#4a5568;flex-shrink:0">${label}</span>
-      <span style="color:#e2e8f0;text-align:right">${value}</span>
+      <span style="color:#4a5568;flex-shrink:0">${escapeHtml(label)}</span>
+      <span style="color:#e2e8f0;text-align:right">${escapeHtml(value)}</span>
     </div>`;
 }
 
@@ -196,14 +196,14 @@ function renderApartmentTypes(aptTypes) {
           <thead>
             <tr>
               <th style="padding:6px 12px;background:rgba(255,255,255,0.04);color:#4a5568;font-weight:600;text-align:left;border:1px solid rgba(255,255,255,0.06)"></th>
-              ${cols.map(c => `<th style="padding:6px 12px;background:rgba(255,255,255,0.04);color:#4f8ef7;font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.06)">${c}</th>`).join("")}
+              ${cols.map(c => `<th style="padding:6px 12px;background:rgba(255,255,255,0.04);color:#4f8ef7;font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.06)">${escapeHtml(c)}</th>`).join("")}
             </tr>
           </thead>
           <tbody>
             ${rows.map(r => `
               <tr>
-                <td style="padding:5px 12px;color:#94a3b8;font-weight:500;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02)">${r}</td>
-                ${cols.map(c => `<td style="padding:5px 12px;color:#e2e8f0;text-align:center;border:1px solid rgba(255,255,255,0.04)">${aptTypes[r]?.[c] || "—"}</td>`).join("")}
+                <td style="padding:5px 12px;color:#94a3b8;font-weight:500;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02)">${escapeHtml(r)}</td>
+                ${cols.map(c => `<td style="padding:5px 12px;color:#e2e8f0;text-align:center;border:1px solid rgba(255,255,255,0.04)">${escapeHtml(aptTypes[r]?.[c]) || "—"}</td>`).join("")}
               </tr>`).join("")}
           </tbody>
         </table>
@@ -223,8 +223,8 @@ function renderDocuments(docs) {
         ${entries.map(([key, url]) => {
           const urls = Array.isArray(url) ? url : [url];
           return urls.filter(Boolean).map((u, i) => `
-            <a href="${u}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:6px;color:#34d399;font-size:11px;text-decoration:none">
-              📄 ${key}${urls.length > 1 ? " "+(i+1) : ""}
+            <a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:6px;color:#34d399;font-size:11px;text-decoration:none">
+              📄 ${escapeHtml(key)}${urls.length > 1 ? " "+(i+1) : ""}
             </a>`).join("");
         }).join("")}
       </div>

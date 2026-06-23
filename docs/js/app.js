@@ -1,3 +1,4 @@
+import { escapeHtml } from "./utils.js";
 import { db }                          from "./firebase.js";
 import { renderPropertiesTable }       from "./properties.js";
 import { renderMembersTable }          from "./members.js";
@@ -34,10 +35,12 @@ function renderKPIs() {
 // ── Data helpers ──────────────────────────────────────────────
 function getLookupData() {
   return {
-    members:       allMembers,
-    registrations: allRegistrations,
-    buyInterests:  allBuyForm,
-    sellInterests: allSellForm,
+    members:          allMembers,
+    registrations:    allRegistrations,
+    buyInterests:     allBuyForm,
+    sellInterests:    allSellForm,
+    rentInterests:    [],
+    offplanInterests: [],
   };
 }
 
@@ -131,12 +134,12 @@ function renderFormTable(items, type, expandedSet) {
         ">▶</button>
       </td>
       <td><span style="font-size:11px;background:${color}22;color:${color};padding:2px 8px;border-radius:6px;font-weight:600">${label}</span></td>
-      <td style="font-weight:500;color:#e2e8f0">${m.name || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.phone || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.location || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.building || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.category || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.propertyStatus || m.chosenOption || "—"}</td>
+      <td style="font-weight:500;color:#e2e8f0">${escapeHtml(m.name) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.phone) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.location) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.building) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.category) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.propertyStatus || m.chosenOption) || "—"}</td>
       <td>${isMember ? `<span style="font-size:10px;background:rgba(52,211,153,0.15);color:#34d399;padding:2px 8px;border-radius:4px;font-weight:600">MEMBER</span>` : `<span style="font-size:10px;color:#4a5568">Guest</span>`}</td>
       <td style="color:#4a5568;font-size:12px">${date}</td>
     </tr>`;
@@ -195,12 +198,12 @@ function detailSection(heading, fields) {
     .filter(([, v]) => v !== null && v !== undefined && v !== "")
     .map(([label, value]) => `
       <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
-        <span style="font-size:12px;color:#4a5568">${label}</span>
-        <span style="font-size:12px;color:#cbd5e1;text-align:right;max-width:60%">${value}</span>
+        <span style="font-size:12px;color:#4a5568">${escapeHtml(label)}</span>
+        <span style="font-size:12px;color:#cbd5e1;text-align:right;max-width:60%">${escapeHtml(value)}</span>
       </div>`).join("");
   if (!rows) return "";
   return `<div>
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#4a5568;margin-bottom:8px;font-weight:600">${heading}</div>
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#4a5568;margin-bottom:8px;font-weight:600">${escapeHtml(heading)}</div>
     ${rows}
   </div>`;
 }
