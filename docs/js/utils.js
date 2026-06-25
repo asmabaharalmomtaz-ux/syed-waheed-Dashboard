@@ -1,3 +1,10 @@
+export function escapeHtml(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
+
 export function getStatus(lead) {
   const d = lead.createdAt?.toDate ? lead.createdAt.toDate() : new Date();
   const h = (Date.now() - d.getTime()) / 3600000;

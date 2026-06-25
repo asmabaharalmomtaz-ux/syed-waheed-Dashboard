@@ -1,4 +1,4 @@
-import { fmtDate } from "./utils.js";
+import { fmtDate, escapeHtml } from "./utils.js";
 
 let expandedRegs = new Set();
 
@@ -36,15 +36,15 @@ export function renderRegistrationsTable(docs) {
       <td style="width:32px;text-align:center">
         <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:rgba(79,142,247,0.15);color:#4f8ef7;font-size:11px;font-weight:700;transition:transform 0.2s;transform:${isExp?"rotate(90deg)":"rotate(0deg)"}">▶</span>
       </td>
-      <td style="color:#e2e8f0;font-weight:500">${d.name || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${d.phone || d.whatsapp || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${d.email || "—"}</td>
+      <td style="color:#e2e8f0;font-weight:500">${escapeHtml(d.name) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(d.phone || d.whatsapp) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(d.email) || "—"}</td>
       <td>
         <span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(79,142,247,0.12);color:#4f8ef7">
-          ${d.jobTitle || "—"}
+          ${escapeHtml(d.jobTitle) || "—"}
         </span>
       </td>
-      <td style="color:#94a3b8;font-size:13px">${d.joiningDate || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(d.joiningDate) || "—"}</td>
       <td style="color:#94a3b8;font-size:13px">${fmtDate(d.createdAt)}</td>`;
     tr.addEventListener("click", () => { expandedRegs.has(d.id) ? expandedRegs.delete(d.id) : expandedRegs.add(d.id); renderRegistrationsTable(docs); });
     tbody.appendChild(tr);
@@ -82,7 +82,7 @@ export function renderRegistrationsTable(docs) {
         </div>
         ${d.documentFile ? `
           <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05)">
-            <a href="${d.documentFile}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:rgba(79,142,247,0.12);color:#4f8ef7;font-size:13px;font-weight:500;text-decoration:none;border:1px solid rgba(79,142,247,0.2)">
+            <a href="${escapeHtml(d.documentFile)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:rgba(79,142,247,0.12);color:#4f8ef7;font-size:13px;font-weight:500;text-decoration:none;border:1px solid rgba(79,142,247,0.2)">
               📄 View CV / CNIC Document
             </a>
           </div>` : ""}
@@ -97,7 +97,7 @@ export function renderRegistrationsTable(docs) {
 function dr(label, value) {
   if (!value && value !== 0) return "";
   return `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);gap:12px">
-    <span style="font-size:12px;color:#4a5568;flex-shrink:0">${label}</span>
-    <span style="font-size:12px;color:#cbd5e1;text-align:right">${value}</span>
+    <span style="font-size:12px;color:#4a5568;flex-shrink:0">${escapeHtml(label)}</span>
+    <span style="font-size:12px;color:#cbd5e1;text-align:right">${escapeHtml(value)}</span>
   </div>`;
 }

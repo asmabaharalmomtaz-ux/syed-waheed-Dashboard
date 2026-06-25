@@ -1,4 +1,4 @@
-import { fmtDate } from "./utils.js";
+import { fmtDate, escapeHtml } from "./utils.js";
 
 // Called from app.js with all collections data
 export function renderMemberLookup({ members, registrations, sellInterests, buyInterests, rentInterests, offplanInterests }) {
@@ -54,7 +54,7 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
   });
 
   if (matchedKeys.size === 0) {
-    resultsEl.innerHTML = `<div style="text-align:center;padding:40px;color:#4a5568">No results found for "<strong style="color:#94a3b8">${query}</strong>"</div>`;
+    resultsEl.innerHTML = `<div style="text-align:center;padding:40px;color:#4a5568">No results found for "<strong style="color:#94a3b8">${escapeHtml(query)}</strong>"</div>`;
     return;
   }
 
@@ -99,7 +99,7 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
   const peopleList = Object.values(people);
 
   if (!peopleList.length) {
-    resultsEl.innerHTML = `<div style="text-align:center;padding:40px;color:#4a5568">No results found for "<strong style="color:#94a3b8">${query}</strong>"</div>`;
+    resultsEl.innerHTML = `<div style="text-align:center;padding:40px;color:#4a5568">No results found for "<strong style="color:#94a3b8">${escapeHtml(query)}</strong>"</div>`;
     return;
   }
 
@@ -125,12 +125,12 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
         <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px">
           <div>
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-              <span style="font-size:16px;font-weight:600;color:#e2e8f0">${p.name}</span>
+              <span style="font-size:16px;font-weight:600;color:#e2e8f0">${escapeHtml(p.name)}</span>
               ${p.isMember
                 ? `<span style="font-size:10px;background:rgba(52,211,153,0.15);color:#34d399;padding:2px 8px;border-radius:4px;font-weight:600">MEMBER</span>`
                 : `<span style="font-size:10px;background:rgba(148,163,184,0.15);color:#94a3b8;padding:2px 8px;border-radius:4px;font-weight:600">GUEST</span>`}
             </div>
-            <div style="font-size:13px;color:#4a5568">📞 ${p.phone} ${p.rollNo !== "—" ? `&nbsp;·&nbsp; 🪪 ${p.rollNo}` : ""}</div>
+            <div style="font-size:13px;color:#4a5568">📞 ${escapeHtml(p.phone)} ${p.rollNo !== "—" ? `&nbsp;·&nbsp; 🪪 ${escapeHtml(p.rollNo)}` : ""}</div>
           </div>
           <div style="text-align:right">
             <div style="font-size:28px;font-weight:700;color:#4f8ef7;line-height:1">${p.submissions.length}</div>

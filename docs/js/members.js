@@ -1,4 +1,4 @@
-import { fmtDate } from "./utils.js";
+import { fmtDate, escapeHtml } from "./utils.js";
 
 let expandedMembers = new Set();
 
@@ -75,18 +75,18 @@ export function renderMembersTable(members) {
       </td>
       <td><span style="font-family:monospace;font-size:12px;color:#a78bfa;
         background:rgba(167,139,250,0.1);padding:2px 8px;border-radius:6px">
-        ${m.rollNo || "—"}
+        ${escapeHtml(m.rollNo) || "—"}
       </span></td>
-      <td style="font-weight:500;color:#e2e8f0">${m.name || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.email || "—"}</td>
-      <td style="color:#94a3b8;font-size:13px">${m.whatsapp || "—"}</td>
+      <td style="font-weight:500;color:#e2e8f0">${escapeHtml(m.name) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.email) || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.whatsapp) || "—"}</td>
       <td>
         <span style="
           padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
           background:rgba(79,142,247,0.12);color:#4f8ef7;
-        ">${m.jobTitle || "—"}</span>
+        ">${escapeHtml(m.jobTitle) || "—"}</span>
       </td>
-      <td style="color:#94a3b8;font-size:13px">${m.joiningDate || "—"}</td>
+      <td style="color:#94a3b8;font-size:13px">${escapeHtml(m.joiningDate) || "—"}</td>
       <td style="color:#94a3b8;font-size:13px">${contract}</td>
     `;
     tr.addEventListener("click", () => toggleMemberRow(m.id, detailTr));
@@ -164,7 +164,7 @@ export function renderMembersTable(members) {
               <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#4a5568;margin-bottom:10px;font-weight:600">
                 📎 CV / CNIC Document
               </div>
-              <a href="${m.documentFile}" target="_blank" rel="noopener" style="
+              <a href="${escapeHtml(m.documentFile)}" target="_blank" rel="noopener" style="
                 display:inline-flex;align-items:center;gap:8px;
                 padding:8px 16px;border-radius:8px;
                 background:rgba(79,142,247,0.12);color:#4f8ef7;
@@ -206,11 +206,13 @@ function detailRow(label, value) {
   return `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;
       padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);gap:12px">
-      <span style="font-size:12px;color:#4a5568;flex-shrink:0">${label}</span>
-      <span style="font-size:12px;color:#cbd5e1;text-align:right">${value}</span>
+      <span style="font-size:12px;color:#4a5568;flex-shrink:0">${escapeHtml(label)}</span>
+      <span style="font-size:12px;color:#cbd5e1;text-align:right">${escapeHtml(value)}</span>
     </div>
   `;
 }
+
+
 
 
 
