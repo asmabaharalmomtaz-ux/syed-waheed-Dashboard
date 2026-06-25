@@ -16,15 +16,8 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
     return;
   }
 
-  // Search members collection for matching people
-  const matchedMembers = members.filter(m =>
-    (m.name        || "").toLowerCase().includes(query) ||
-    (m.whatsapp    || "").toLowerCase().includes(query) ||
-    (m.phone       || "").toLowerCase().includes(query) ||
-    (m.memberPhone || "").toLowerCase().includes(query)
-  );
-
-  // Also search by memberName/memberPhone across all interest collections
+  // Group ALL interest docs + members by person (phone preferred, else name)
+  const people = {};
   const allInterestDocs = [
     ...sellInterests.map(d => ({ ...d, _source: "Sell Interest" })),
     ...buyInterests.map(d  => ({ ...d, _source: "Buy Interest"  })),
@@ -33,47 +26,15 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
     ...registrations.map(d => ({ ...d, _source: "Registration" })),
   ];
 
-  // Find unique identifiers that match the query
-  const matchedKeys = new Set();
   allInterestDocs.forEach(d => {
-    if (
-      (d.memberName  || "").toLowerCase().includes(query) ||
-      (d.memberPhone || "").toLowerCase().includes(query) ||
-      (d.name        || "").toLowerCase().includes(query) ||
-      (d.phone       || "").toLowerCase().includes(query)
-    ) {
-      const key = d.memberPhone || d.phone || d.memberName || d.name || d.id;
-      matchedKeys.add(key);
-    }
-  });
-
-  // Also add matched members' phones
-  matchedMembers.forEach(m => {
-    const key = m.whatsapp || m.phone || m.name;
-    if (key) matchedKeys.add(key.toLowerCase());
-  });
-
-  if (matchedKeys.size === 0) {
-    resultsEl.innerHTML = `<div style="text-align:center;padding:40px;color:#4a5568">No results found for "<strong style="color:#94a3b8">${escapeHtml(query)}</strong>"</div>`;
-    return;
-  }
-
-  // Group all docs by person
-  const people = {};
-  allInterestDocs.forEach(d => {
-    const nameKey  = (d.memberName  || d.name  || "").toLowerCase();
-    const phoneKey = (d.memberPhone || d.phone || "").toLowerCase();
-    const personKey = phoneKey || nameKey;
+    const name  = d.memberName  || d.name  || "";
+    const phone = d.memberPhone || d.phone || "";
+    const personKey = (phone || name).toLowerCase();
     if (!personKey) return;
-
-    // Check if this person matches any of our matched keys
-    const matches = [...matchedKeys].some(k => personKey.includes(k) || k.includes(personKey) || nameKey.includes(k) || k.includes(nameKey));
-    if (!matches) return;
 
     if (!people[personKey]) {
       people[personKey] = {
-        name:  d.memberName  || d.name  || "—",
-        phone: d.memberPhone || d.phone || "—",
+        name, phone,
         rollNo: d.memberRollNo || "—",
         isMember: d.submittedAsMember || false,
         submissions: [],
@@ -82,9 +43,9 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
     people[personKey].submissions.push({ source: d._source, date: fmtDate(d.createdAt) });
   });
 
-  // Also include matched members with zero submissions
-  matchedMembers.forEach(m => {
+  members.forEach(m => {
     const personKey = (m.whatsapp || m.phone || m.name || "").toLowerCase();
+    if (!personKey) return;
     if (!people[personKey]) {
       people[personKey] = {
         name: m.name || "—",
@@ -93,15 +54,38 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
         isMember: true,
         submissions: [],
       };
+    } else {
+      people[personKey].isMember = true; // members collection is the source of truth for membership
     }
   });
 
-  const peopleList = Object.values(people);
+  // Filter directly against the query — no indirect cross-matching
+  const matched = Object.values(people).filter(p =>
+    (p.name  || "").toLowerCase().includes(query) ||
+    (p.phone || "").toLowerCase().includes(query)
+  );
 
-  if (!peopleList.length) {
+  if (!matched.length) {
     resultsEl.innerHTML = `<div style="text-align:center;padding:40px;color:#4a5568">No results found for "<strong style="color:#94a3b8">${escapeHtml(query)}</strong>"</div>`;
     return;
   }
+
+  // Rank by relevance to the query, not insertion order:
+  // 1. Exact name match  2. Name starts with query  3. Exact phone match
+  // 4. Phone starts with query  5. Everything else (alphabetical)
+  const rank = p => {
+    const n = (p.name  || "").toLowerCase();
+    const ph = (p.phone || "").toLowerCase();
+    if (n === query)            return 0;
+    if (n.startsWith(query))    return 1;
+    if (ph === query)           return 2;
+    if (ph.startsWith(query))   return 3;
+    return 4;
+  };
+  const peopleList = matched.sort((a, b) => {
+    const r = rank(a) - rank(b);
+    return r !== 0 ? r : (a.name || "").localeCompare(b.name || "");
+  });
 
   resultsEl.innerHTML = peopleList.map(p => {
     const formCounts = {};
@@ -109,10 +93,11 @@ export function renderMemberLookup({ members, registrations, sellInterests, buyI
 
     const formTags = Object.entries(formCounts).map(([form, count]) => {
       const colors = {
-        "Sell-Form":      { bg: "rgba(245,158,11,0.15)",  text: "#f59e0b"  },
-        "Buy-Form":       { bg: "rgba(52,211,153,0.15)",  text: "#34d399"  },
-     
-        "Registration":       { bg: "rgba(79,142,247,0.15)",  text: "#4f8ef7"  },
+        "Sell Interest":     { bg: "rgba(245,158,11,0.15)",  text: "#f59e0b"  },
+        "Buy Interest":      { bg: "rgba(52,211,153,0.15)",  text: "#34d399"  },
+        "Rent Interest":     { bg: "rgba(167,139,250,0.15)", text: "#a78bfa"  },
+        "Off-Plan Interest": { bg: "rgba(236,72,153,0.15)",  text: "#ec4899"  },
+        "Registration":      { bg: "rgba(79,142,247,0.15)",  text: "#4f8ef7"  },
       };
       const c = colors[form] || { bg: "rgba(148,163,184,0.15)", text: "#94a3b8" };
       return `<span style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;background:${c.bg};color:${c.text};margin-right:6px;margin-bottom:6px;display:inline-block">
