@@ -5,6 +5,7 @@ import { renderMembersTable }          from "./members.js";
 import { renderRegistrationsTable }    from "./registrations.js";
 import { renderMemberLookup }          from "./member-lookup.js";
 import { renderGlobalSearch }          from "./global-search.js";
+import { renderBuildingInfoTable }     from "./building-info.js";
 import { initAuth }                    from "./auth.js";
 import { collection, onSnapshot, query, orderBy }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -15,6 +16,7 @@ let allMembers       = [];
 let allRegistrations = [];
 let allBuyForm       = [];
 let allSellForm      = [];
+let allBuildingInfo  = [];
 
 // ── KPIs ──────────────────────────────────────────────────────
 function renderKPIs() {
@@ -25,11 +27,12 @@ function renderKPIs() {
   set("kpi-members", allMembers.length);
   set("kpi-budget",  allRegistrations.length);
   // Overview cards
-  set("overview-buy",     allBuyForm.length);
-  set("overview-sell",    allSellForm.length);
-  set("overview-members", allMembers.length);
-  set("overview-props",   allProperties.length);
-  set("overview-regs",    allRegistrations.length);
+  set("overview-buy",        allBuyForm.length);
+  set("overview-sell",       allSellForm.length);
+  set("overview-members",    allMembers.length);
+  set("overview-props",      allProperties.length);
+  set("overview-regs",       allRegistrations.length);
+  set("overview-binfo",      allBuildingInfo.length);
 }
 
 // ── Data helpers ──────────────────────────────────────────────
@@ -66,6 +69,7 @@ function setView(viewName) {
   if (viewName === "registrations") renderRegistrationsTable(allRegistrations);
   if (viewName === "lookup")        renderMemberLookup(getLookupData());
   if (viewName === "global-search") renderGlobalSearch(getSearchData());
+  if (viewName === "building-info") renderBuildingInfoTable(allBuildingInfo);
 }
 
 // ── Simple table renderers for Buy-Form and Sell-Form ─────────
@@ -263,6 +267,14 @@ function startApp() {
     renderRegistrationsTable(allRegistrations);
   }, err => console.error("registrations error:", err));
 
+  // Building-Info-Form
+  const qBInfo = query(collection(db, "Building-Info-Form"), orderBy("createdAt", "desc"));
+  onSnapshot(qBInfo, snap => {
+    allBuildingInfo = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderKPIs();
+    renderBuildingInfoTable(allBuildingInfo);
+  }, err => console.error("Building-Info-Form error:", err));
+
   // Nav buttons
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -280,6 +292,7 @@ function startApp() {
   document.getElementById("members-search")?.addEventListener("input",      () => renderMembersTable(allMembers));
   document.getElementById("regs-search")?.addEventListener("input",         () => renderRegistrationsTable(allRegistrations));
   document.getElementById("lookup-search")?.addEventListener("input",       () => renderMemberLookup(getLookupData()));
+  document.getElementById("binfo-search")?.addEventListener("input", () => renderBuildingInfoTable(allBuildingInfo));
   document.getElementById("global-search-input")?.addEventListener("input", () => renderGlobalSearch(getSearchData()));
 
 } // end startApp
