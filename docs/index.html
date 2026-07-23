@@ -123,6 +123,23 @@
             <div class="kpi-icon">🪪</div>
           </div>
         </div>
+        <!-- Charts -->
+<div class="charts-row">
+  <div class="card">
+    <div class="card-title">Buy vs Sell Trend</div>
+    <div class="card-sub">Submissions over the last 6 months</div>
+    <div class="chart-wrap">
+      <canvas id="areaChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Submission Breakdown</div>
+    <div class="card-sub">Share by form / collection type</div>
+    <div class="chart-wrap">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+</div>
 
         <!-- Interest Breakdown Cards -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px">
@@ -280,7 +297,7 @@
       <!-- Properties view -->
       <div id="view-properties" class="view">
         <div class="filters">
-          <input id="props-search" class="filter-input" placeholder="🔍  Search building, area, city, ref no…"/>
+         document.getElementById("props-search")?.addEventListener("input", () => renderPropertiesTable(allProperties));
         </div>
         <div class="table-wrap" id="props-container">
           <div style="padding:40px;text-align:center;color:#4a5568">Loading…</div>
