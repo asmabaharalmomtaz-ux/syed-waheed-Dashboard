@@ -6,8 +6,8 @@ import { renderRegistrationsTable }    from "./registrations.js";
 import { renderMemberLookup }          from "./member-lookup.js";
 import { renderGlobalSearch }          from "./global-search.js";
 import { renderBuildingInfoTable }     from "./building-info.js";
+import { renderMediaLibrary }          from "./media-library.js";
 import { initAuth }                    from "./auth.js";
-import { renderAreaChart, renderPieChart } from "./charts.js";
 import { collection, onSnapshot, query, orderBy }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -33,24 +33,9 @@ function renderKPIs() {
   set("overview-members",    allMembers.length);
   set("overview-props",      allProperties.length);
   set("overview-regs",       allRegistrations.length);
-
-    set("overview-binfo",      allBuildingInfo.length);
-  renderCharts();   // ← add this line
+  set("overview-binfo",      allBuildingInfo.length);
 }
 
-
-
-function renderCharts() {
-  renderAreaChart(allBuyForm, allSellForm);
-  renderPieChart({
-    buy:           allBuyForm.length,
-    sell:          allSellForm.length,
-    properties:    allProperties.length,
-    members:       allMembers.length,
-    registrations: allRegistrations.length,
-    buildingInfo:  allBuildingInfo.length,
-  });
-}
 // ── Data helpers ──────────────────────────────────────────────
 function getLookupData() {
   return {
@@ -86,7 +71,7 @@ function setView(viewName) {
   if (viewName === "lookup")        renderMemberLookup(getLookupData());
   if (viewName === "global-search") renderGlobalSearch(getSearchData());
   if (viewName === "building-info") renderBuildingInfoTable(allBuildingInfo);
-    if (viewName === "dashboard")     renderCharts(); 
+  if (viewName === "media")         renderMediaLibrary();
 }
 
 // ── Simple table renderers for Buy-Form and Sell-Form ─────────

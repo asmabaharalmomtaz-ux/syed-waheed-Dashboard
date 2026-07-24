@@ -60,6 +60,9 @@
         <button class="nav-btn" data-view="properties">🏘 &nbsp; Properties</button>
         <button class="nav-btn" data-view="building-info">🏗 &nbsp; Building Info</button>
 
+        <div style="padding:8px 24px 4px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#2d3748;font-weight:600">Content</div>
+        <button class="nav-btn" data-view="media">🖼 &nbsp; Media</button>
+
         <button class="nav-btn danger" id="logout-btn" data-view="logout" style="margin-top:8px">↩ &nbsp; Logout</button>
       </nav>
 
@@ -123,23 +126,6 @@
             <div class="kpi-icon">🪪</div>
           </div>
         </div>
-        <!-- Charts -->
-<div class="charts-row">
-  <div class="card">
-    <div class="card-title">Buy vs Sell Trend</div>
-    <div class="card-sub">Submissions over the last 6 months</div>
-    <div class="chart-wrap">
-      <canvas id="areaChart"></canvas>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Submission Breakdown</div>
-    <div class="card-sub">Share by form / collection type</div>
-    <div class="chart-wrap">
-      <canvas id="pieChart"></canvas>
-    </div>
-  </div>
-</div>
 
         <!-- Interest Breakdown Cards -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px">
@@ -297,7 +283,7 @@
       <!-- Properties view -->
       <div id="view-properties" class="view">
         <div class="filters">
-         document.getElementById("props-search")?.addEventListener("input", () => renderPropertiesTable(allProperties));
+          <input id="props-search" class="filter-input" placeholder="🔍  Search building, area, city, ref no…"/>
         </div>
         <div class="table-wrap" id="props-container">
           <div style="padding:40px;text-align:center;color:#4a5568">Loading…</div>
@@ -314,6 +300,19 @@
           <div style="padding:40px;text-align:center;color:#4a5568">Loading…</div>
         </div>
         <div id="binfo-count" style="margin-top:12px;font-size:12px;color:#4a5568"></div>
+      </div>
+
+      <!-- Media Library -->
+      <div id="view-media" class="view" style="width:100%">
+        <div style="margin-bottom:20px">
+          <div style="font-size:22px;font-weight:700;color:#e2e8f0;margin-bottom:6px">🖼 Media Library</div>
+          <div style="font-size:13px;color:#4a5568">Manage all property images, logos, banners and marketing assets.</div>
+        </div>
+        <div id="media-toolbar"></div>
+        <div id="media-body" style="display:flex;gap:20px;align-items:flex-start;margin-top:20px">
+          <div id="media-folder-sidebar" class="media-folder-col"></div>
+          <div id="media-main" class="media-main-col"></div>
+        </div>
       </div>
 
     </div><!-- end #main -->
